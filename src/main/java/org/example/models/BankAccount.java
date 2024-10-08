@@ -6,6 +6,7 @@ import java.util.UUID;
 
 public abstract class BankAccount {
 
+    protected String bank;
     protected int codAccount;
     protected String owner;
     protected BigDecimal balance = BigDecimal.valueOf(0);

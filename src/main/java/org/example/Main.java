@@ -1,12 +1,9 @@
 package org.example;
 
-import org.example.fabric.BankAccountWithPix;
 import org.example.fabric.BankAccountWithoutPix;
-import org.example.fabric.BankFabric;
+import org.example.fabric.BankFactory;
 import org.example.models.BankAccount;
-import org.example.models.digital.Nubank;
 import org.example.proxy.DynamicTransactionsProxy;
-import org.example.proxy.TransactionProxy;
 import org.example.service.TransactionsService;
 import org.example.service.TransactionsServiceImpl;
 
@@ -17,8 +14,8 @@ public class Main {
     public static void main(String[] args) {
 
 
-        BankFabric bankFabric = new BankAccountWithoutPix();
-        BankAccount bankAccount = bankFabric.createInterAccount("eduardo");
+        BankFactory bankFactory = new BankAccountWithoutPix();
+        BankAccount bankAccount = bankFactory.createInterAccount("eduardo");
 
 //        TransactionsService transactionsService = new TransactionsServiceImpl(bankAccount);
 //

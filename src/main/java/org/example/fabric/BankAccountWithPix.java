@@ -6,10 +6,8 @@ import org.example.models.digital.Nubank;
 
 import java.math.BigDecimal;
 import java.time.Duration;
-import java.util.Random;
-import java.util.UUID;
 
-public class BankAccountWithPix implements BankFabric{
+public class BankAccountWithPix implements BankFactory {
 
     @Override
     public BankAccount createNuBankAccount(String owner) {

@@ -2,7 +2,7 @@ package org.example.fabric;
 
 import org.example.models.BankAccount;
 
-public interface BankFabric {
+public interface BankFactory {
 
     BankAccount createNuBankAccount(String owner);
 
