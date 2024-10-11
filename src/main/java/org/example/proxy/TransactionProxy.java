@@ -15,7 +15,7 @@ public class TransactionProxy implements TransactionsService {
 
     private final TransactionsService transactionsService;
 
-    private Logger log = Logger.getLogger(TransactionProxy.class.getName());
+    private final Logger log = Logger.getLogger(TransactionProxy.class.getName());
 
     public TransactionProxy(TransactionsService transactionsService) {
         this.transactionsService = transactionsService;
@@ -23,72 +23,35 @@ public class TransactionProxy implements TransactionsService {
 
     @Override
     public boolean deposit(BigDecimal amount) {
-        Method method = null;
-        try {
-            method = TransactionsService.class.getMethod("deposit", BigDecimal.class);
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
-
         boolean deposito = false;
 
-        if (method.isAnnotationPresent(Transaction.class)) {
-            log.info("Iniciando execução do método " + method.getName() + "." + method.getDeclaringClass().getName());
+        log.info("Iniciando execucao do metodo deposit");
 
-            deposito = this.transactionsService.deposit(amount);
+        deposito = transactionsService.deposit(amount);
 
-            if (deposito) {
-                log.info("Finalizando a execução do metodo " + method.getName() + "." + method.getDeclaringClass().getName() + " com sucesso");
-            } else {
-                log.info("Finalizando a execução do metodo " + method.getName() + "." + method.getDeclaringClass().getName() + " com erro");
-            }
-        }
+        log.info("Finalizando com sucesso a execucao do metodo deposit");
 
         return deposito;
     }
 
     @Override
     public boolean withdraw(BigDecimal amount) {
-        Method method = null;
-        try {
-            method = TransactionsService.class.getMethod("withdraw", BigDecimal.class);
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
-        boolean saque = false;
+        boolean withdraw = false;
 
-        if (method.isAnnotationPresent(Transaction.class)) {
-            log.info("Iniciando execução do método " + method.getName() + "." + method.getDeclaringClass().getName());
+        log.info("Iniciando execucao do metodo deposit");
 
-            saque = this.transactionsService.withdraw(amount);
+        withdraw = transactionsService.withdraw(amount);
 
-            if (saque) {
-                log.info("Finalizando a execução do metodo " + method.getName() + "." + method.getDeclaringClass().getName() + " com sucesso");
-            } else {
-                log.info("Finalizando a execução do metodo " + method.getName() + "." + method.getDeclaringClass().getName() + " com erro");
-            }
-        }
+        log.info("Finalizando com sucesso a execucao do metodo deposit");
 
-        return saque;
+
+        return withdraw;
     }
 
     @Override
     public void checkAccount() {
-        Method method = null;
-        try {
-            method = TransactionsService.class.getMethod("checkAccount");
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
-
-        if (method.isAnnotationPresent(Transaction.class)) {
-            log.info("Iniciando execução do método " + method.getName() + "." + method.getDeclaringClass().getName());
-
-            this.transactionsService.checkAccount();
-
-            log.info("Finalizando a execução do metodo " + method.getName() + "." + method.getDeclaringClass().getName() + " com sucesso");
-        }
 
         this.transactionsService.checkAccount();
+
     }
 }

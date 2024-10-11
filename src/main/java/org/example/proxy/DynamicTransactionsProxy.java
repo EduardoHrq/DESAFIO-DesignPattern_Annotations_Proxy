@@ -1,39 +1,35 @@
 package org.example.proxy;
 
 import org.example.annotations.Transaction;
-import org.example.service.TransactionsService;
+import org.example.exceptions.TransactionFailedException;
 
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
+import java.lang.reflect.Proxy;
 import java.util.logging.Logger;
 
 public class DynamicTransactionsProxy implements InvocationHandler {
 
-    private final TransactionsService transactionsService;
-    private Logger log = Logger.getLogger(DynamicTransactionsProxy.class.getName());
+    private final Object transactionsService;
+    private final Logger log = Logger.getLogger(DynamicTransactionsProxy.class.getName());
 
-    public DynamicTransactionsProxy(TransactionsService transactionsService) {
+    public DynamicTransactionsProxy(Object transactionsService) {
         this.transactionsService = transactionsService;
     }
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 
-        boolean chamada = false;
-        if (method.isAnnotationPresent(Transaction.class)) {
-            log.info("Iniciando execução do método " + method.getName() + "." + method.getDeclaringClass().getName());
-            chamada = (boolean) method.invoke(transactionsService, args[0]);
-            if (chamada) {
-                log.info("Finalizando a execução do metodo " + method.getName() + "." + method.getDeclaringClass().getName() + " com sucesso");
-            } else {
-                log.info("Finalizando a execução do metodo " + method.getName() + "." + method.getDeclaringClass().getName() + " com erro");
-            }
-        } else {
-            method.invoke(transactionsService);
+        if (transactionsService.getClass().getMethod(method.getName(), method.getParameterTypes()).isAnnotationPresent(Transaction.class)) {
+            log.info("Iniciando executação do metodo " + method.getName());
+
+            Object resultado = method.invoke(transactionsService, args);
+
+            log.info("Finalizando com sucesso a execução do metodo " + method.getName());
+
+            return resultado;
         }
-
-
-        return chamada;
+        return method.invoke(transactionsService, args);
     }
 }

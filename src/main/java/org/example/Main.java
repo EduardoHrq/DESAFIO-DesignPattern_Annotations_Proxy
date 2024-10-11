@@ -1,9 +1,10 @@
 package org.example;
 
-import org.example.fabric.BankAccountWithoutPix;
-import org.example.fabric.BankFactory;
+import org.example.factory.BankAccountWithoutPix;
+import org.example.factory.BankFactory;
 import org.example.models.BankAccount;
 import org.example.proxy.DynamicTransactionsProxy;
+import org.example.proxy.TransactionProxy;
 import org.example.service.TransactionsService;
 import org.example.service.TransactionsServiceImpl;
 
@@ -15,26 +16,26 @@ public class Main {
 
 
         BankFactory bankFactory = new BankAccountWithoutPix();
-        BankAccount bankAccount = bankFactory.createInterAccount("eduardo");
+        BankAccount bankAccount = bankFactory.createInterAccount();
 
-//        TransactionsService transactionsService = new TransactionsServiceImpl(bankAccount);
-//
-//        TransactionProxy transactionProxy = new TransactionProxy(transactionsService);
-//
-//        transactionProxy.deposit(BigDecimal.valueOf(1000));
-//        transactionProxy.withdraw(BigDecimal.valueOf(1000));
-//
-//        transactionProxy.checkAccount();
+        TransactionsService transactionsService = new TransactionsServiceImpl(bankAccount);
 
-        TransactionsService transactionsService = (TransactionsService) Proxy.newProxyInstance(
-                TransactionsService.class.getClassLoader(),
-                TransactionsServiceImpl.class.getInterfaces(),
-                new DynamicTransactionsProxy(new TransactionsServiceImpl(bankAccount))
-        );
+        TransactionProxy transactionProxy = new TransactionProxy(transactionsService);
 
-        transactionsService.deposit(BigDecimal.valueOf(10000));
-        transactionsService.withdraw(BigDecimal.valueOf(1000000));
-        transactionsService.checkAccount();
+        transactionProxy.deposit(BigDecimal.valueOf(1000));
+        transactionProxy.withdraw(BigDecimal.valueOf(1000));
+
+        transactionProxy.checkAccount();
+
+//        TransactionsService transactionsService = (TransactionsService) Proxy.newProxyInstance(
+//                TransactionsServiceImpl.class.getClassLoader(),
+//                TransactionsServiceImpl.class.getInterfaces(),
+//                new DynamicTransactionsProxy(new TransactionsServiceImpl(bankAccount))
+//        );
+//
+//        transactionsService.deposit(BigDecimal.valueOf(10));
+//        transactionsService.withdraw(BigDecimal.valueOf(5));
+//        transactionsService.checkAccount();
 
     }
 }

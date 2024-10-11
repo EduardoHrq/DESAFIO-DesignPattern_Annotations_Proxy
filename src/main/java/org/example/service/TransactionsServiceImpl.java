@@ -1,6 +1,7 @@
 package org.example.service;
 
 import org.example.annotations.Transaction;
+import org.example.exceptions.TransactionFailedException;
 import org.example.models.BankAccount;
 
 import java.math.BigDecimal;
@@ -14,7 +15,7 @@ public class TransactionsServiceImpl implements TransactionsService{
     }
 
     @Override
-//    @Transaction
+    @Transaction
     public boolean deposit(BigDecimal amount) {
 
         if (amount.compareTo(this.bankAccount.getBalance()) >= 0) {
@@ -23,17 +24,17 @@ public class TransactionsServiceImpl implements TransactionsService{
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            this.bankAccount.setBalance(this.bankAccount.getBalance().add(amount));
+            this.bankAccount.deposit(amount);
             System.out.println("Deposito de = R$ " + amount.setScale(2).toString().replace(".", ","));
 
             return true;
+        } else {
+            throw new TransactionFailedException("Transação não efetuada -> rollback");
         }
-
-        return false;
     }
 
     @Override
-//    @Transaction
+    @Transaction
     public boolean withdraw(BigDecimal amount) {
         if (amount.compareTo(this.bankAccount.getBalance()) <= 0) {
             try {
@@ -41,13 +42,13 @@ public class TransactionsServiceImpl implements TransactionsService{
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            this.bankAccount.setBalance(this.bankAccount.getBalance().subtract(amount));
+            this.bankAccount.withdraw(amount);
             System.out.println("Saque de = R$ " + amount.setScale(2).toString().replace(".", ","));
 
             return true;
+        } else {
+            throw new TransactionFailedException("Transação não efetuada -> rollback");
         }
-
-        return false;
     }
 
     @Override

@@ -2,7 +2,6 @@ package org.example.models;
 
 import java.math.BigDecimal;
 import java.time.Duration;
-import java.util.UUID;
 
 public abstract class BankAccount {
 
@@ -13,10 +12,11 @@ public abstract class BankAccount {
     protected Duration timeToComplete;
 
     public BankAccount() {
+        this.codAccount =(int) (Math.random() * (9000 - 1000 + 1));
     }
 
-    public BankAccount(int codAccount, String owner, BigDecimal balance, Duration timeToComplete) {
-        this.codAccount = codAccount;
+    public BankAccount(String owner, BigDecimal balance, Duration timeToComplete) {
+        this.codAccount =(int) (Math.random() * (9000 - 1000 + 1));
         this.owner = owner;
         this.balance = balance;
         this.timeToComplete = timeToComplete;
@@ -53,4 +53,13 @@ public abstract class BankAccount {
     public void setTimeToComplete(Duration timeToComplete) {
         this.timeToComplete = timeToComplete;
     }
+
+    public void withdraw(BigDecimal amount) {
+        this.balance = this.balance.subtract(amount);
+    }
+
+    public void deposit(BigDecimal amount) {
+        this.balance = this.balance.add(amount);
+    }
+
 }
