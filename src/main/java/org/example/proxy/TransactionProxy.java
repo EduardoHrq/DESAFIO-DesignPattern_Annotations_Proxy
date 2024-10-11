@@ -38,11 +38,11 @@ public class TransactionProxy implements TransactionsService {
     public boolean withdraw(BigDecimal amount) {
         boolean withdraw = false;
 
-        log.info("Iniciando execucao do metodo deposit");
+        log.info("Iniciando execucao do metodo withdraw");
 
         withdraw = transactionsService.withdraw(amount);
 
-        log.info("Finalizando com sucesso a execucao do metodo deposit");
+        log.info("Finalizando com sucesso a execucao do metodo withdraw");
 
 
         return withdraw;

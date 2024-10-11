@@ -1,6 +1,7 @@
-package org.example.factory;
+package org.example.factory.object;
 
 import org.example.models.BankAccount;
+import org.example.models.enums.ProxyType;
 import org.example.models.withPix.BankInterWithPix;
 import org.example.models.withPix.NubankWithPix;
 
